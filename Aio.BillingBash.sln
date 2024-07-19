@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35027.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{701FE92E-1EA1-4E57-A56C-702EC0102FA9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{FDA71543-9F19-4772-9CBE-50696A08401D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aio.BillingBash.Blazor", "src\Aio.BillingBash.Blazor\Aio.BillingBash.Blazor.csproj", "{40294A6C-498A-417A-932D-90CAD95FFE44}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{40294A6C-498A-417A-932D-90CAD95FFE44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40294A6C-498A-417A-932D-90CAD95FFE44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40294A6C-498A-417A-932D-90CAD95FFE44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40294A6C-498A-417A-932D-90CAD95FFE44}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{40294A6C-498A-417A-932D-90CAD95FFE44} = {701FE92E-1EA1-4E57-A56C-702EC0102FA9}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6178CD3A-F9BD-431A-B18B-9B1A282ED5DC}
+	EndGlobalSection
+EndGlobal
