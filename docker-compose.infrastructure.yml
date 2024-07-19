@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+
+  postgresql:
+    image: postgres:latest
+    container_name: postgresql
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    
+volumes:
+  db_data:
+    driver: local
