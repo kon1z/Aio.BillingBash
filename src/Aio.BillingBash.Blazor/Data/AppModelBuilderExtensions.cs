@@ -9,13 +9,26 @@ namespace Aio.BillingBash.Data
 		{
 			modelBuilder.Entity<User>(b =>
 			{
-				b.ToTable("Sys_User");
+				b.ToTable("User");
 
 				b.HasKey(x => x.Id);
 				b.Property(x => x.Username).IsRequired().HasMaxLength(20);
 				b.Property(x => x.PasswordHash).IsRequired().HasMaxLength(1024);
 
 				b.HasIndex(x => x.Username);
+
+				b.HasMany(x => x.JoinedParties).WithMany(x => x.Users);
+			});
+
+			modelBuilder.Entity<Party>(b =>
+			{
+				b.ToTable("Party");
+
+				b.HasKey(x => x.Id);
+				b.Property(x => x.Name).IsRequired().HasMaxLength(20);
+				b.Property(x => x.Description).HasMaxLength(1024);
+
+				b.HasIndex(x => x.Name);
 			});
 		}
 	}

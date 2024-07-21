@@ -2,6 +2,6 @@
 {
 	public interface IHasLastModificationTime
 	{
-		DateTime LastModificationTime { get; set; }
+		DateTime? LastModificationTime { get; set; }
 	}
 }

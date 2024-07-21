@@ -15,6 +15,9 @@ namespace Aio.BillingBash.Models
 		public string Username { get; set; }
 		public string PasswordHash { get; set; }
 		public DateTime CreationTime { get; set; }
-		public DateTime LastModificationTime { get; set; }
+		public DateTime? LastModificationTime { get; set; }
+
+		public virtual ICollection<Party> JoinedParties { get; set; }
+		//public virtual ICollection<Bill> Bills { get; set; }
 	}
 }

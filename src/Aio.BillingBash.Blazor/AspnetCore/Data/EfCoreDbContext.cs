@@ -65,9 +65,14 @@ namespace Aio.BillingBash.AspnetCore.Data
 
 			if (entry.State == EntityState.Deleted)
 			{
-				if (entry.Entity is IHasDeleteUser entityWithDeleteUser)
+				if (entry.Entity is IHasDeletionUser entityWithDeletionUser)
 				{
-					entityWithDeleteUser.DeleteUserId = CurrentUser.UserId;
+					entityWithDeletionUser.DeletionUserId = CurrentUser.UserId;
+				}
+
+				if (entry.Entity is IHasDeletionTime entityWithDeletionTime)
+				{
+					 entityWithDeletionTime.DeletionTime = ClockProvider.GetCurrentTime();
 				}
 
 				if (entry.Entity is ISoftDelete entityWithSoftDelete)
