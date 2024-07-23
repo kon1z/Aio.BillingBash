@@ -1,23 +1,12 @@
 ﻿using Aio.BillingBash.AspnetCore.Model;
+using Microsoft.AspNetCore.Identity;
 
 namespace Aio.BillingBash.Models
 {
-	public class User : IHasCreationTime, IHasLastModificationTime
+	public class User : IdentityUser, IHasCreationTime, IHasLastModificationTime
 	{
-		public User(Guid id, string username, string passwordHash)
-		{
-			Id = id;
-			Username = username;
-			PasswordHash = passwordHash;
-		}
-
-		public Guid Id { get; set; }
-		public string Username { get; set; }
-		public string PasswordHash { get; set; }
 		public DateTime CreationTime { get; set; }
 		public DateTime? LastModificationTime { get; set; }
-
-		public virtual ICollection<Party> JoinedParties { get; set; }
-		//public virtual ICollection<Bill> Bills { get; set; }
+		public virtual ICollection<Party> JoinedParties { get; set; } = new List<Party>();
 	}
 }

@@ -13,9 +13,17 @@ namespace Aio.BillingBash.AspnetCore.Middlewares
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            var unitOfWork = await _unitOfWorkManager.BeginAsync();
-            await next(context);
-            await unitOfWork.CompleteAsync(context.RequestAborted);
+	        if (!new[] {HttpMethod.Delete.Method, HttpMethod.Patch.Method, HttpMethod.Post.Method, HttpMethod.Put.Method}
+		            .Contains(context.Request.Method))
+	        {
+		        await next(context);
+	        }
+	        else
+	        {
+		        var unitOfWork = await _unitOfWorkManager.BeginAsync();
+		        await next(context);
+		        await unitOfWork.CompleteAsync(context.RequestAborted);
+	        }
         }
     }
 }

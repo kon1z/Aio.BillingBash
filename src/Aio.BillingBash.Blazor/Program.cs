@@ -1,93 +1,54 @@
-using Aio.BillingBash;
 using Aio.BillingBash.AspnetCore.Middlewares;
 using Aio.BillingBash.Components;
-using Aio.BillingBash.Data;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.EntityFrameworkCore;
+using Aio.BillingBash.Helper;
 
-var builder = WebApplication.CreateBuilder(args);
-builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
-	.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+namespace Aio.BillingBash;
+
+public static class Program
+{
+	public static void Main(string[] args)
 	{
-		containerBuilder.RegisterModule<AppModuleRegister>();
-	});
+		var builder = WebApplication.CreateBuilder(args);
+		builder
+			.ConfigureSerilog()
+			.ConfigureAutofac()
+			.ConfigureIdentityServices()
+			//.ConfigureOpenIddictServices()
+			.ConfigureAutoMapperServices()
+			.ConfigurationApiControllerServices()
+			.ConfigureSwaggerServices()
+			.ConfigureBlazorServices()
+			.ConfigureEntityFrameworkCoreServices();
 
-var configuration = builder.Configuration;
+		var app = builder.Build();
 
-builder.Services.AddRazorComponents()
-	.AddInteractiveServerComponents();
-builder.Services.AddDbContext<AppDbContext>(options =>
-{
-	options.UseNpgsql(configuration.GetConnectionString("Default"));
-	options.UseOpenIddict();
-});
-//builder.Services.AddOpenIddict()
-//	.AddCore(options =>
-//	{
-//		options.UseEntityFrameworkCore()
-//			.UseDbContext<AppDbContext>();
-//	})
-//	.AddClient(options =>
-//	{
-//		options.AllowAuthorizationCodeFlow();
-//#if DEBUG
-//		options.AddDevelopmentEncryptionCertificate();
-//		options.AddDevelopmentSigningCertificate();
-//#endif
-//		options.UseAspNetCore()
-//			.EnableRedirectionEndpointPassthrough();
+		if (!app.Environment.IsDevelopment())
+		{
+			app.UseExceptionHandler("/Error", createScopeForErrors: true);
+			app.UseHsts();
+		}
 
-//		options.UseSystemNetHttp()
-//			.SetProductInformation(typeof(Program).Assembly);
-//	})
-//	.AddServer(options =>
-//	{
-//		options.SetAuthorizationEndpointUris("authorize")
-//			.SetTokenEndpointUris("token");
+		app.UseHttpsRedirection();
 
-//		options.AllowAuthorizationCodeFlow();
-//#if DEBUG
-//		options.AddDevelopmentEncryptionCertificate()
-//			.AddDevelopmentSigningCertificate();
-//#endif
-//		options.UseAspNetCore()
-//			.EnableAuthorizationEndpointPassthrough();
-//	})
-//	.AddValidation(options =>
-//	{
-//		options.UseLocalServer();
-//		options.UseAspNetCore();
-//	});
-builder.Services.AddAutoMapper(options =>
-{
-	options.AddProfile<AppAutoMapperProfile>();
-});
+		app.UseSwagger();
+		app.UseSwaggerUI();
 
-builder.Services.AddAuthorization()
-	.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-	.AddCookie();
+		app.UseStaticFiles(); 
 
-var app = builder.Build();
+		app.UseRouting();
 
-if (!app.Environment.IsDevelopment())
-{
-	app.UseExceptionHandler("/Error", createScopeForErrors: true);
-	app.UseHsts();
+		app.UseAuthentication();
+		app.UseAuthorization();
+
+		app.UseMiddleware<UnitOfWorkMiddleware>();
+
+		app.UseAntiforgery();
+
+		app.MapRazorComponents<App>()
+			.AddInteractiveServerRenderMode();
+
+		app.MapControllers();
+
+		app.Run();
+	}
 }
-
-app.UseHttpsRedirection();
-
-app.UseStaticFiles();
-app.UseAntiforgery();
-
-app.UseMiddleware<UnitOfWorkMiddleware>();
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapRazorComponents<App>()
-	.AddInteractiveServerRenderMode();
-
-app.Run();
